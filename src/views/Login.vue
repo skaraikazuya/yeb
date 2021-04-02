@@ -10,14 +10,7 @@
                 <el-input type="password" auto-complete="false" v-model="loginForm.password" placeholder="请输入密码">
                 </el-input>
             </el-form-item>
-            <el-form-item prop="code">
-                <el-input type="text" auto-complete="false" v-model="loginForm.code"
-                          placeholder="点击图片更换验证码" style="width: 200px;margin-right: 5px">
-                </el-input>
-                <img :src="captchaUrl">
 
-
-            </el-form-item>
             <el-checkbox v-model="checked" class="loginRemember">记住我</el-checkbox>
             <el-button type="primary" style="width: 100%" @click="submitLogin">登录</el-button>
         </el-form>
@@ -26,11 +19,13 @@
 </template>
 
 <script>
+    import {postRequest} from "../utils/api";
+
     export default {
         name: "Login",
         data(){
             return{
-                captchaUrl:'',
+
                 loginForm:{
                     username:'admin',
                     password:'123',
@@ -39,17 +34,23 @@
                 checked:true,
                 rules:{
                     username:[{required:true,message:'请输入用户名',trigger:'blur'}],
-                    password:[{required:true,message:'请输入密码',trigger:'blur'}],
-                    code:[{required:true,message:'请输入验证码',trigger:'blur'}]
+                    password:[{required:true,message:'请输入密码',trigger:'blur'}]
+
                 }
             }
 
         },
         methods:{
+
             submitLogin(){
                 this.$refs.loginForm.validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        postRequest('/login',this.loginForm).then(resp=>{
+                            if (resp){
+                                this.$router.replace('/home');
+                            }
+                        })
+
                     } else {
                         this.$message.error('请输入所有字段！');
                         return false;
