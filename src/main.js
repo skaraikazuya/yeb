@@ -15,7 +15,7 @@ Vue.prototype.postRequest = postRequest;
 Vue.prototype.putRequest = putRequest;
 Vue.prototype.getRequest = getRequest;
 Vue.prototype.deleteRequest = deleteRequest;
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 new Vue({
   router,
   render: h => h(App)
